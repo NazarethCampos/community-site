@@ -1,135 +1,42 @@
-# 커뮤니티 사이트 (Community Site)
+# Christian Guitar Community | 기독교 기타 커뮤니티
 
-Express.js + PostgreSQL + Railway를 사용한 커뮤니티 웹 애플리케이션
+React + Node.js + Firebase 기반의 기독교 기타 애호가들을 위한 특화 커뮤니티 플랫폼입니다.
 
-## 🌐 URLs
+## 🎸 프로젝트 소개
 
-- **GitHub**: https://github.com/NazarethCampos/community-site
-- **프로덕션** (배포 예정): `https://your-app.up.railway.app`
+찬양과 연주로 하나님을 예배하는 기타 애호가들이 모여 서로의 재능을 나누고 격려하는 커뮤니티입니다.
 
-## ✨ 주요 기능
+### 주요 특화 기능
 
-### 완료된 기능
-- ✅ 사용자 인증 (회원가입, 로그인) - JWT 기반
-- ✅ 게시글 CRUD (생성, 조회, 수정, 삭제)
-- ✅ 카테고리별 게시판 (갤러리, 영상, 신앙나눔)
-- ✅ 좋아요 기능 (토글)
-- ✅ 댓글 시스템
-- ✅ 반응형 UI (TailwindCSS)
-- ✅ 보안 강화 (bcrypt 비밀번호 해싱, JWT 인증)
-- ✅ PostgreSQL 관계형 데이터베이스
-- ✅ Sequelize ORM
+- **🎬 연주 영상 갤러리**: YouTube 영상 임베드 지원, 찬양곡/커버/레슨 카테고리
+- **🎸 장비 갤러리**: 기타, 앰프, 이펙터, 악세서리 등 장비 자랑 및 정보 공유
+- **💬 커뮤니티**: 신앙나눔, 자유게시판, 연주 팁 등 다양한 주제의 게시판
 
-### 아직 구현되지 않은 기능
-- ⏳ 이미지 직접 업로드
-- ⏳ 게시글 검색 기능
-- ⏳ 페이지네이션
-- ⏳ 사용자 프로필 페이지
-- ⏳ 댓글 수정/삭제
-- ⏳ 게시글 조회수
+## 🚀 기술 스택
 
-## 🏗️ 기술 스택
-
-### 백엔드
-- **Node.js** (v20+)
-- **Express.js** (v5) - 웹 프레임워크
-- **PostgreSQL** (v16) - 관계형 데이터베이스
-- **Sequelize** (v6) - ORM
-- **JWT** - 인증
-- **bcryptjs** - 비밀번호 해싱
-
-### 프론트엔드
-- **Vanilla JavaScript** - ES6+
+### Frontend
+- **React 18** - UI 라이브러리
+- **Vite** - 빌드 도구
+- **React Router** - 라우팅
 - **TailwindCSS** - 스타일링
-- **Axios** - HTTP 클라이언트
-- **Font Awesome** - 아이콘
+- **Firebase SDK** - 인증 및 데이터베이스 클라이언트
 
-### 배포
-- **Railway** - 호스팅 및 PostgreSQL
-- **PM2** - 프로세스 관리 (로컬)
+### Backend
+- **Node.js + Express** - REST API 서버
+- **Firebase Admin SDK** - 서버사이드 Firebase 연동
 
-## 📊 데이터베이스 스키마
+### Database & Storage
+- **Firebase Authentication** - 사용자 인증 (이메일/Google)
+- **Cloud Firestore** - NoSQL 데이터베이스
+- **Firebase Storage** - 이미지 저장소
 
-### Users (사용자)
-- `id` - PRIMARY KEY
-- `username` - UNIQUE, NOT NULL
-- `email` - UNIQUE, NOT NULL
-- `password` - NOT NULL (bcrypt 해싱)
-- `createdAt`, `updatedAt`
+## 📋 사전 요구사항
 
-### Posts (게시글)
-- `id` - PRIMARY KEY
-- `title` - NOT NULL
-- `description` - TEXT
-- `imageUrl` - NOT NULL
-- `category` - NOT NULL (갤러리/영상/신앙나눔)
-- `authorId` - FOREIGN KEY → Users
-- `authorName` - NOT NULL
-- `likes` - INTEGER, DEFAULT 0
-- `createdAt`, `updatedAt`
+- Node.js 18 이상
+- npm 또는 yarn
+- Firebase 프로젝트 설정
 
-### Comments (댓글)
-- `id` - PRIMARY KEY
-- `postId` - FOREIGN KEY → Posts
-- `userId` - FOREIGN KEY → Users
-- `userName` - NOT NULL
-- `content` - TEXT, NOT NULL
-- `createdAt`, `updatedAt`
-
-### PostLikes (좋아요)
-- `id` - PRIMARY KEY
-- `postId` - FOREIGN KEY → Posts
-- `userId` - FOREIGN KEY → Users
-- `createdAt`, `updatedAt`
-- UNIQUE(postId, userId) - 중복 좋아요 방지
-
-## 🔌 API 엔드포인트
-
-### 인증 (Authentication)
-```
-POST /api/auth/signup
-Body: { username, email, password }
-Response: { token, user }
-
-POST /api/auth/login
-Body: { email, password }
-Response: { token, user }
-```
-
-### 게시글 (Posts)
-```
-GET /api/posts
-Query: ?category=갤러리|영상|신앙나눔
-Response: [posts]
-
-GET /api/posts/:id
-Response: { post with comments }
-
-POST /api/posts (인증 필요)
-Headers: Authorization: Bearer <token>
-Body: { title, description, imageUrl, category }
-Response: { post }
-
-PUT /api/posts/:id (작성자만)
-Headers: Authorization: Bearer <token>
-Body: { title, description, imageUrl, category }
-Response: { post }
-
-DELETE /api/posts/:id (작성자만)
-Headers: Authorization: Bearer <token>
-Response: { message }
-
-POST /api/posts/:id/like (인증 필요)
-Headers: Authorization: Bearer <token>
-Response: { liked: boolean }
-
-POST /api/posts/:id/comments (인증 필요)
-Headers: Authorization: Bearer <token>
-Body: { content }
-Response: { comment }
-```
-
-## 🚀 로컬 개발 환경 설정
+## 🔧 설치 및 실행
 
 ### 1. 저장소 클론
 ```bash
@@ -142,205 +49,254 @@ cd community-site
 npm install
 ```
 
-### 3. 환경변수 설정
+### 3. Firebase 프로젝트 설정
+
+1. [Firebase Console](https://console.firebase.google.com/)에서 새 프로젝트 생성
+2. Authentication 활성화 (이메일/비밀번호, Google)
+3. Cloud Firestore 데이터베이스 생성 (프로덕션 모드)
+4. Firebase Storage 활성화
+5. 웹 앱 추가 및 설정 정보 복사
+
+### 4. 환경 변수 설정
+
 `.env` 파일 생성:
+```bash
+cp .env.example .env
+```
+
+`.env` 파일에 Firebase 설정 입력:
 ```env
-NODE_ENV=development
+# Firebase Configuration (클라이언트)
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+
+# Server Configuration
 PORT=5000
+NODE_ENV=development
 
-JWT_SECRET=your-super-secret-jwt-key
-
-# PostgreSQL (로컬)
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_NAME=community_dev
-DB_USER=postgres
-DB_PASSWORD=postgres
+# Firebase Admin SDK (서버)
+FIREBASE_SERVICE_ACCOUNT_PATH=./serviceAccountKey.json
 ```
 
-### 4. PostgreSQL 설정
-```bash
-# PostgreSQL 설치 또는 Docker 사용
-docker run --name postgres-community \
-  -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=community_dev \
-  -p 5432:5432 \
-  -d postgres:16-alpine
+### 5. Firebase Admin SDK 설정
+
+1. Firebase Console > 프로젝트 설정 > 서비스 계정
+2. "새 비공개 키 생성" 클릭
+3. 다운로드한 JSON 파일을 프로젝트 루트에 `serviceAccountKey.json`으로 저장
+
+### 6. Firestore 보안 규칙 설정
+
+Firebase Console > Firestore Database > 규칙:
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users collection
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Posts collection
+    match /posts/{postId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && 
+        request.auth.uid == resource.data.authorId;
+      
+      // Comments subcollection
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if request.auth != null;
+        allow update, delete: if request.auth != null && 
+          request.auth.uid == resource.data.userId;
+      }
+    }
+  }
+}
 ```
 
-### 5. 데이터베이스 마이그레이션
-```bash
-npm run db:migrate
+### 7. Storage 보안 규칙 설정
+
+Firebase Console > Storage > 규칙:
+
+```javascript
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /uploads/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.resource.size < 5 * 1024 * 1024  // 5MB limit
+        && request.resource.contentType.matches('image/.*');
+    }
+  }
+}
 ```
 
-### 6. 서버 시작
+### 8. 개발 서버 실행
+
 ```bash
-# 개발 모드 (nodemon)
+# 클라이언트와 서버 동시 실행
 npm run dev
 
-# 프로덕션 모드
-npm start
-
-# PM2 사용
-pm2 start ecosystem.config.cjs
+# 또는 개별 실행
+npm run dev:client  # 클라이언트만 (http://localhost:5173)
+npm run dev:server  # 서버만 (http://localhost:5000)
 ```
 
-## 📦 Railway 배포 가이드
-
-### 1. Railway CLI 설치
-```bash
-npm install -g @railway/cli
-```
-
-### 2. Railway 로그인
-```bash
-railway login
-```
-
-### 3. 프로젝트 초기화
-```bash
-railway init
-```
-
-### 4. PostgreSQL 추가
-Railway 대시보드에서:
-1. "New" → "Database" → "PostgreSQL" 선택
-2. 자동으로 `DATABASE_URL` 환경변수 생성됨
-
-### 5. 환경변수 설정
-Railway 대시보드에서:
-- `JWT_SECRET`: 랜덤 문자열 (보안 키)
-- `NODE_ENV`: `production`
-- `DATABASE_URL`: (자동 설정됨)
-
-### 6. 배포
-```bash
-# GitHub 연동 자동 배포 (권장)
-railway up
-
-# 또는 Git push
-git push railway main
-```
-
-### 7. 데이터베이스 마이그레이션 (최초 1회)
-```bash
-railway run npm run db:migrate
-```
-
-## 📱 사용자 가이드
-
-### 1. 회원가입 및 로그인
-- 우측 상단 "회원가입" 버튼 클릭
-- 사용자명, 이메일, 비밀번호(6자 이상) 입력
-- 로그인 후 모든 기능 사용 가능
-
-### 2. 게시글 작성
-- 로그인 후 "글쓰기" 버튼 클릭
-- 카테고리, 제목, 내용, 이미지 URL 입력
-- 작성 완료 후 자동으로 게시판에 표시
-
-### 3. 게시글 보기
-- 메인 화면에서 카테고리 선택
-- 게시글 카드 클릭하여 상세 페이지 이동
-- 좋아요 및 댓글 작성 가능
-
-### 4. 상호작용
-- ❤️ 좋아요: 하트 아이콘 클릭 (토글)
-- 💬 댓글: 댓글 입력창에 내용 작성 후 "댓글 작성" 클릭
-
-## 📂 프로젝트 구조
+## 📁 프로젝트 구조
 
 ```
-community-site/
-├── src/
-│   ├── server.js           # Express 서버 엔트리포인트
-│   ├── config/
-│   │   └── database.json   # Sequelize 데이터베이스 설정
-│   ├── models/             # Sequelize 모델
-│   │   ├── user.js
-│   │   ├── post.js
-│   │   ├── comment.js
-│   │   └── postlike.js
-│   ├── routes/             # API 라우트
-│   │   ├── auth.js         # 인증 API
-│   │   └── posts.js        # 게시글 API
-│   ├── middleware/
-│   │   └── auth.js         # JWT 인증 미들웨어
-│   ├── migrations/         # 데이터베이스 마이그레이션
-│   └── seeders/            # 시드 데이터
-├── public/
-│   ├── index.html          # 메인 HTML
-│   └── static/
-│       └── app.js          # 프론트엔드 JavaScript
-├── .env                    # 환경변수 (gitignore)
-├── .sequelizerc            # Sequelize CLI 설정
-├── ecosystem.config.cjs    # PM2 설정
-├── railway.json            # Railway 배포 설정
-├── Procfile                # Railway 프로세스 정의
+christian-guitar-community/
+├── client/                 # React 프론트엔드
+│   └── src/
+│       ├── components/     # 재사용 컴포넌트
+│       ├── pages/         # 페이지 컴포넌트
+│       ├── contexts/      # React Context (Auth)
+│       ├── services/      # Firebase 설정
+│       ├── hooks/         # Custom Hooks
+│       └── utils/         # 유틸리티 함수
+├── server/                # Express 백엔드
+│   ├── config/           # Firebase Admin 설정
+│   ├── middleware/       # 인증 미들웨어
+│   └── routes/           # API 라우트
+├── index.html            # HTML 템플릿
+├── vite.config.js        # Vite 설정
+├── tailwind.config.js    # Tailwind 설정
 └── package.json
 ```
 
-## 🔧 다음 개발 단계
+## 🗄️ 데이터 구조
 
-### 우선순위 높음
-1. ✅ Railway 프로덕션 배포
-2. 이미지 업로드 기능 (Cloudinary/AWS S3)
-3. 검색 기능 (제목/내용/작성자)
-4. 페이지네이션 (무한 스크롤)
-
-### 우선순위 중간
-5. 사용자 프로필 페이지
-6. 댓글 수정/삭제 기능
-7. 게시글 조회수 트래킹
-8. 알림 시스템
-
-### 우선순위 낮음
-9. 다크 모드
-10. 소셜 공유 기능
-11. 관리자 대시보드
-
-## 📝 최근 업데이트
-
-- **2026-01-03**: Express + PostgreSQL 마이그레이션 완료
-  - Hono + D1 → Express + PostgreSQL
-  - Sequelize ORM 도입
-  - bcrypt 비밀번호 해싱
-  - Railway 배포 준비 완료
-  - 모든 API 기능 구현
-
-## 🐛 문제 해결
-
-### PostgreSQL 연결 오류
-```bash
-# PostgreSQL 서비스 확인
-service postgresql status
-
-# 포트 확인
-netstat -an | grep 5432
+### Users Collection
+```javascript
+{
+  uid: string,
+  email: string,
+  displayName: string,
+  photoURL: string | null,
+  bio: string,
+  favoriteGuitar: string,
+  createdAt: timestamp,
+  role: string
+}
 ```
 
-### 마이그레이션 오류
-```bash
-# 마이그레이션 롤백 후 재실행
-npm run db:reset
+### Posts Collection
+```javascript
+{
+  id: string,
+  title: string,
+  description: string,
+  category: 'video' | 'equipment' | 'community',
+  subcategory: string,
+  
+  // Video posts
+  videoUrl?: string,
+  
+  // Equipment posts
+  imageUrl?: string,
+  brand?: string,
+  model?: string,
+  
+  authorId: string,
+  authorName: string,
+  authorPhoto: string | null,
+  
+  likes: number,
+  commentsCount: number,
+  
+  createdAt: timestamp,
+  updatedAt: timestamp
+}
 ```
 
-### Railway 배포 오류
-```bash
-# 로그 확인
-railway logs
-
-# 환경변수 확인
-railway variables
+### Comments Subcollection (posts/{postId}/comments)
+```javascript
+{
+  id: string,
+  postId: string,
+  userId: string,
+  userName: string,
+  userPhoto: string | null,
+  content: string,
+  createdAt: timestamp
+}
 ```
 
-## 📄 라이선스
+## 🔌 API 엔드포인트
 
-MIT License
+### Posts
+- `GET /api/posts` - 게시글 목록 조회
+- `GET /api/posts/:id` - 게시글 상세 조회
+- `POST /api/posts` - 게시글 생성 (인증 필요)
+- `PUT /api/posts/:id` - 게시글 수정 (인증 필요)
+- `DELETE /api/posts/:id` - 게시글 삭제 (인증 필요)
+- `POST /api/posts/:id/like` - 좋아요 토글 (인증 필요)
+- `POST /api/posts/:id/comments` - 댓글 작성 (인증 필요)
 
-## 👤 작성자
+### Users
+- `GET /api/users/:uid` - 사용자 프로필 조회
+- `PUT /api/users/:uid` - 사용자 프로필 수정 (인증 필요)
+- `GET /api/users/:uid/posts` - 사용자 게시글 목록
 
-NazarethCampos
+## 🚀 배포
+
+### Vercel 배포 (권장)
+
+1. Vercel CLI 설치:
+```bash
+npm install -g vercel
+```
+
+2. 프로젝트 빌드:
+```bash
+npm run build
+```
+
+3. Vercel 배포:
+```bash
+vercel
+```
+
+4. 환경 변수 설정:
+   - Vercel Dashboard에서 프로젝트 설정
+   - Environment Variables에 `.env` 내용 추가
+
+### Firebase Hosting 배포
+
+```bash
+npm install -g firebase-tools
+firebase login
+firebase init hosting
+npm run build
+firebase deploy --only hosting
+```
+
+## 📝 주요 기능
+
+### 완료된 기능
+- ✅ 사용자 인증 (이메일, Google)
+- ✅ 연주 영상 갤러리 (YouTube 임베드)
+- ✅ 장비 갤러리 (이미지 업로드)
+- ✅ 커뮤니티 게시판
+- ✅ 반응형 디자인
+- ✅ 카테고리별 필터링
+
+### 개발 예정
+- ⏳ 게시글 상세 페이지 및 댓글 시스템
+- ⏳ 좋아요 기능
+- ⏳ 프로필 페이지
+- ⏳ 이미지 업로드 (Firebase Storage)
+- ⏳ 검색 기능
+- ⏳ 페이지네이션
+- ⏳ 실시간 알림
 
 ## 🤝 기여
 
@@ -351,3 +307,17 @@ Pull Request를 환영합니다!
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+## 📄 라이선스
+
+MIT License
+
+## 👤 작성자
+
+NazarethCampos
+
+## 🙏 감사의 말
+
+이 프로젝트는 하나님의 영광을 위해, 그리고 기타를 통해 찬양하는 모든 크리스천들을 위해 만들어졌습니다.
+
+> "시편, 찬송, 신령한 노래들로 서로 화답하며 너희의 마음으로 주께 노래하며 찬송하며" - 에베소서 5:19
